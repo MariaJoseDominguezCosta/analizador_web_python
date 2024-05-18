@@ -67,7 +67,7 @@
         <h1>Errores</h1>
         <ul>
             {% for error in errors %}
-                <li>Error en la línea {{ error.line }}: Token '{{ error.token }}' no reconocido.</li>
+                <li>Error en la línea {{ error.line }}: Token '{{ error.token }}' no reconocido. ¿Deberia ser '{{error.suggested_word}}' ?</li>
             {% endfor %}
         </ul>
     {% endif %}

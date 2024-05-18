@@ -11,7 +11,6 @@ reserved_words = {
     "if",
     "int",
     "else",
-    "print",
     "printf",
     "end",
     "read",
