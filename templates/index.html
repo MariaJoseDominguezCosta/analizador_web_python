@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang= "en">
+<head>
+    <title>Analizador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="https://yt3.googleusercontent.com/ytc/AIdro_mf_8EkwzsGbmw_w3w9jY_VUUxJFg8WBjn5OyBEbwirKg=s160-c-k-c0x00ffffff-no-rj">
+</head>
+<body>
+<h1>- Analizador Léxico -</h1>
+<form action="/" method="POST">
+    <label for="code">Ingrese el código:</label>
+    <br>
+    <textarea name="code" id="code" rows="5">{{ code }}</textarea>
+    <br>
+    <input type="submit" value="Analizar">
+</form>
+
+<div id="result" style="display: {{ 'block' if tokens else 'none' }}">
+    <h2>Resultado del Análisis</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Token</th>
+            <th>Línea</th>
+            <th>Palabra reservada</th>
+            <th>Símbolo</th>
+            <th>Coma</th>
+            <th>Punto y coma</th>
+            <th>Paréntesis izquierdo</th>
+            <th>Paréntesis derecho</th>
+            <th>Llave izquierda</th>
+            <th>Llave derecha</th>
+            <th>Número</th>
+            <th>Identificador</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if tokens %}
+            {% for token in tokens[:-1] %}
+                <tr class="{% if 'token' in token and token.token in errors|map(attribute='token') %}error{% endif %}">
+                    <td>{{ token.token }}</td>
+                    <td>{{ token.line }}</td>
+                    <td>{{ token.reserved }}</td>
+                    <td>{{ token.symbol }}</td>
+                    <td>{{ token.comma }}</td>
+                    <td>{{ token.semicolon }}</td>
+                    <td>{{ token.left_paren }}</td>
+                    <td>{{ token.right_paren }}</td>
+                    <td>{{ token.left_brace }}</td>
+                    <td>{{ token.right_brace }}</td>
+                    <td>{{ token.number }}</td>
+                    <td>{{ token.identifier }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>Total</td>
+                {% for key, count in tokens[-1].items() %}
+                    <td>{{ count }}</td>
+                {% endfor %}
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    {% if errors %}
+        <div align="center">
+        <h1>Errores</h1>
+        <ul>
+            {% for error in errors %}
+                <li>Error en la línea {{ error.line }}: Token '{{ error.token }}' no reconocido.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+        </div>
+</div>
+</body>
+</html>
